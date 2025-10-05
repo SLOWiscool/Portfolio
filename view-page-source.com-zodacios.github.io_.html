@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content=
+  "width=device-width,initial-scale=1">
+  <title>ZodaciOS — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com"
+  crossorigin="">
+  <link href=
+  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+  rel="stylesheet">
+  <style>
+
+  @media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .right-column {
+    position: relative;
+    top: 0;
+  }
+  }
+
+
+  @media (min-width: 769px) and (max-width: 1180px) {
+  .grid {
+    grid-template-columns: 1.5fr 1fr; /* flexible split */
+    gap: 20px;
+  }
+  .container {
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .right-column {
+    position: relative; 
+    top: 0;
+  }
+  }
+
+
+  @media (min-width: 1181px) {
+  .grid {
+    grid-template-columns: 1fr 380px;
+    gap: 36px;
+  }
+  }
+  :root{
+    --bg-dark: #060614;
+    --mid-dark: #0b1221;
+    --pink-1: #ff5ca8;
+    --pink-2: #ff87d0;
+    --blue-light: #6ee7ff;
+    --blue-mid: #3b82f6;
+    --blue-dark: #06133b;
+    --glass: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.06);
+    --text: #e6eef9;
+    --muted: #9fb3d6;
+    --accent-gradient: linear-gradient(90deg, var(--pink-1), var(--blue-light), var(--blue-mid));
+    --transition: 420ms cubic-bezier(.2,.9,.2,1);
+  }
+
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:
+      radial-gradient(1200px 600px at 10% 20%, rgba(255,92,168,0.08), transparent 12%),
+      radial-gradient(900px 500px at 90% 80%, rgba(59,130,246,0.06), transparent 10%),
+      linear-gradient(180deg,var(--bg-dark), #05040a 60%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+
+  .bg-animated{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      conic-gradient(from 200deg at 10% 20%, rgba(255,92,168,0.06), transparent 40%),
+      conic-gradient(from 50deg at 90% 80%, rgba(59,130,246,0.05), transparent 40%);
+    mix-blend-mode:screen;
+    animation: bgShift 18s linear infinite;
+    opacity:0.9;
+  }
+  @keyframes bgShift{
+    0%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-20px) rotate(2deg)}
+    100%{transform:translateY(0) rotate(0deg)}
+  }
+
+  .container{
+    position:relative;
+    z-index:3;
+    max-width:1200px;
+    margin:48px auto;
+    padding:40px;
+  }
+
+
+  header.site-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .logo {
+    width:56px; height:56px;
+    border-radius:12px;
+    background: linear-gradient(135deg,var(--pink-1),var(--blue-mid));
+    box-shadow: 0 6px 22px rgba(10,10,20,0.6), inset 0 -6px 18px rgba(255,255,255,0.02);
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-weight:800;
+    font-size:18px;
+  }
+  .brand h2{
+    margin:0;
+    font-weight:700;
+    letter-spacing: -0.6px;
+  }
+  .brand p{margin:0;color:var(--muted);font-size:13px}
+
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:28px;
+    align-items:start;
+  }
+
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border:1px solid var(--card-border);
+    padding:28px;
+    border-radius:14px;
+    backdrop-filter: blur(8px) saturate(1.05);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    overflow:hidden;
+  }
+
+
+  .hero{
+    min-height:320px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:18px;
+    position:relative;
+  }
+  .placeholder-title{
+    font-size:36px;
+    margin:0;
+    font-weight:800;
+    letter-spacing:-1px;
+    color:var(--text);
+    background: linear-gradient(90deg,var(--pink-1),var(--blue-light));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color: transparent;
+  }
+  .placeholder-sub{
+    margin:0;
+    color:var(--muted);
+    font-size:16px;
+    max-width:800px;
+  }
+
+  .cta-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:6px;
+  }
+  .btn{
+    padding:10px 14px;
+    border-radius:999px;
+    font-weight:600;
+    background:var(--accent-gradient);
+    border:none;
+    color:#041027;
+    cursor:pointer;
+    transition:transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 6px 18px rgba(50,40,80,0.25);
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{
+    background:transparent;
+    color:var(--text);
+    border:1px solid rgba(255,255,255,0.06);
+    box-shadow:none;
+  }
+
+
+  .right-column { position:sticky; top:28px; align-self:start; }
+
+
+  .section-title{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+
+  .skill{
+    margin-bottom:18px;
+  }
+  .skill-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:8px;
+  }
+  .skill-name{font-weight:700;color:var(--text)}
+  .skill-percent{font-weight:700;color:var(--muted); font-feature-settings: "tnum";}
+
+  .progress-track{
+    height:14px;
+    width:100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.02);
+    position:relative;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    transition: width 1.4s cubic-bezier(.2,.9,.2,1);
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--pink-1), var(--pink-2), var(--blue-light), var(--blue-mid));
+    background-size: 240% 100%;
+    animation: gradMove 3.6s linear infinite;
+    position:relative;
+  }
+  .progress-fill::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    mix-blend-mode:overlay;
+    border-radius:999px;
+    pointer-events:none;
+  }
+  @keyframes gradMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+
+
+  .software-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+  .sw-badge{
+    padding:8px 12px;
+    border-radius:999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    border:1px solid rgba(255,255,255,0.03);
+    color:var(--text);
+    font-weight:600;
+    font-size:13px;
+    box-shadow: 0 6px 20px rgba(3,10,25,0.45);
+  }
+
+
+  .hobby-list{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:10px;
+    margin-top:6px;
+  }
+  .hobby{
+    padding:10px;
+    border-radius:10px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+    border:1px solid rgba(255,255,255,0.02);
+    color:var(--muted);
+    font-weight:600;
+  }
+
+
+  .contacts{
+    display:flex;
+    gap:12px;
+    margin-top:10px;
+  }
+  .contact-btn{
+    width:56px;height:56px;border-radius:999px;
+    display:inline-grid;place-items:center;
+    border:0;
+    cursor:pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 10px 24px rgba(2,6,23,0.6);
+    color:var(--text);
+  }
+  .contact-btn:hover{ transform:translateY(-6px) scale(1.04); }
+  .contact-btn .btn-inner{
+    width:46px;height:46px;border-radius:999px; display:grid; place-items:center;
+    background:var(--accent-gradient);
+    box-shadow: inset 0 -6px 14px rgba(0,0,0,0.12);
+  }
+
+
+  .projects-grid{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:12px;
+    margin-top:12px;
+  }
+  .project-tile{
+    min-height:120px;
+    border-radius:10px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+    border:1px solid rgba(255,255,255,0.02);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .project-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+  box-shadow: 0 6px 22px rgba(2,6,23,0.6);
+  transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .project-card:hover {
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 12px 28px rgba(2,6,23,0.8);
+  }
+  .project-icon {
+  width:48px; height:48px;
+  border-radius:12px;
+  background:var(--accent-gradient);
+  display:grid; place-items:center;
+  box-shadow: inset 0 -6px 12px rgba(0,0,0,0.18);
+  }
+  .project-title {
+  margin:0; font-size:18px; font-weight:700; color:var(--text);
+  }
+  .project-desc {
+  margin:0; font-size:14px; color:var(--muted);
+  }
+  .project-btn {
+  margin-top:auto;
+  padding:8px 14px;
+  font-size:14px;
+  }
+
+  .status-badge {
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  color:white;
+  margin:6px 0;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  }
+
+
+
+  .status-badge.in-dev {
+  background: linear-gradient(135deg, #ff4d6d, #ff1e56);
+  }
+  .status-badge.released {
+  background: linear-gradient(135deg, #28a745, #34d058);
+  }
+  .status-badge.archived {
+  background: linear-gradient(135deg, #ffc107, #ffb347);
+  color:black;
+  }
+  .status-badge.unreleased {
+  background: linear-gradient(135deg, #007bff, #3399ff);
+  }
+
+  .projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  }
+
+  .site-footer {
+  margin-top: 40px;
+  padding: 28px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px 14px 0 0;
+  backdrop-filter: blur(8px) saturate(1.05);
+  box-shadow: 0 -6px 20px rgba(2,6,23,0.6);
+  color: var(--muted);
+  font-size: 13px;
+  }
+
+  .footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  }
+
+  .footer-left p {
+  margin: 0;
+  line-height: 1.4;
+  }
+
+  .footer-right {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  }
+
+  .footer-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: transform var(--transition), background var(--transition);
+  background: rgba(255,255,255,0.02);
+  }
+
+  .footer-link:hover {
+  background: var(--accent-gradient);
+  color: #041027;
+  transform: translateY(-2px) scale(1.04);
+  }
+
+
+  .animate-on-scroll{opacity:0; transform:translateY(12px); transition:opacity 700ms cubic-bezier(.2,.9,.2,1), transform 700ms cubic-bezier(.2,.9,.2,1);}
+  .animate-on-scroll.in{opacity:1; transform:none;}
+
+
+
+  @media (max-width:980px){
+    .grid{grid-template-columns:1fr; padding-bottom:40px}
+    .right-column{position:static}
+  }
+  @media (max-width:520px){
+    .placeholder-title{font-size:28px}
+    .brand h2{font-size:16px}
+  }
+
+
+  .muted{color:var(--muted)}
+  .spacer{height:12px}
+  code{background: rgba(0,0,0,0.25); padding:2px 6px;border-radius:6px}
+
+
+  @media (min-width: 768px) and (max-width: 1200px) {
+
+
+    .container {
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+
+    .grid {
+      grid-template-columns: 1fr 340px !important;
+      gap: 24px !important;
+      align-items: start;
+      justify-content: center;
+    }
+
+
+    .right-column {
+      position: relative;
+      top: 0;
+      margin-top: 6px;
+    }
+
+    .card.hero + .section-title,
+    .card.hero + .section-title + .projects-grid {
+      grid-column: 1 / 2;
+      justify-self: stretch;
+      width: 100%;
+      margin-left: 0;
+    }
+
+
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+
+    .card.hero + .section-title {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+  }
+
+
+  .grid {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    grid-auto-flow: row;
+  }
+
+
+  .grid > .section-title,
+  .grid > .projects-grid {
+    grid-column: 1 / 2 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+  }
+
+
+  @media (min-width: 720px) and (max-width: 1180px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 18px !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .container { padding-left: 24px; padding-right: 24px; }
+  }
+
+
+  @media (max-width: 740px) {
+    .projects-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+    .container { padding-left: 16px; padding-right: 16px; }
+  }
+
+  </style>
+</head>
+<body>
+  <div class="bg-animated" aria-hidden="true"></div>
+  <div class="container">
+    <header class="site-header">
+      <div class="brand">
+        <div class="logo">
+          Z
+        </div>
+        <div>
+          <h2 class="muted">ZodaciOS</h2>
+          <p class="muted">iOS Security Researcher</p>
+        </div>
+      </div>
+    </header>
+    <main class="grid">
+      <section class="card hero animate-on-scroll" aria-labelledby=
+      "hero-title">
+        <h1 id="hero-title" class="placeholder-title">ZodaciOS</h1>
+        <p class="placeholder-sub">Software developer & iOS
+        security researcher, focusing on creating iOS targetted
+        projects & a bit of reverse engineering.</p>
+        <div class="cta-row">
+          <button class="btn">Contact Me</button> <button class=
+          "btn ghost">View Github</button>
+        </div>
+        <div class="spacer" id="projects"></div>
+      </section>
+      <div class="section-title">
+        Ongoing Projects
+      </div>
+      <div class="projects-grid">
+        <div class="project-card animate-on-scroll">
+          <div class="project-icon">
+            <svg width="28" height="28" fill="white" viewbox=
+            "0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle></svg>
+          </div>
+          <h3 class="project-title">InstanceX</h3><span class=
+          "status-badge in-dev">In-Development</span>
+          <p class="project-desc">A upcoming jailbroken tweak that
+          allows you to run up to 4 instances of an app, including
+          Roblox using libCrane.</p><button class=
+          "btn project-btn">View</button>
+        </div>
+        <div class="project-card animate-on-scroll">
+          <div class="project-icon">
+            <svg width="28" height="28" fill="white" viewbox=
+            "0 0 24 24">
+            <rect x="4" y="4" width="16" height="16"></rect></svg>
+          </div>
+          <h3 class="project-title">Alia</h3><span class=
+          "status-badge in-dev">In-Development</span>
+          <p class="project-desc">An upcoming keyless iOS Roblox
+          executor with 100% sUNC, custom Luau functions and
+          more.</p><button class="btn project-btn">View</button>
+        </div>
+        <aside class="right-column">
+          <div class="card animate-on-scroll">
+            <div class="section-title">
+              Programming Languages
+            </div>
+            <div class="skill" data-skill="Objective-C">
+              <div class="skill-header">
+                <span class="skill-name">Objective-C</span>
+                <span class="skill-percent" data-target=
+                "15">0%</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" aria-label=
+              "Objective-C skill">
+                <div class="progress-fill" style="--percent:15">
+                </div>
+              </div>
+            </div>
+            <div class="skill" data-skill="Luau">
+              <div class="skill-header">
+                <span class="skill-name">Luau</span> <span class=
+                "skill-percent" data-target="5">0%</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" aria-label=
+              "Luau skill">
+                <div class="progress-fill" style="--percent:5">
+                </div>
+              </div>
+            </div>
+            <div class="skill" data-skill="Python">
+              <div class="skill-header">
+                <span class="skill-name">Python</span> <span class=
+                "skill-percent" data-target="12">0%</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" aria-label=
+              "Python skill">
+                <div class="progress-fill" style="--percent:12">
+                </div>
+              </div>
+            </div>
+            <div class="skill" data-skill="HTML">
+              <div class="skill-header">
+                <span class="skill-name">HTML</span> <span class=
+                "skill-percent" data-target="79">0%</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" aria-label=
+              "HTML skill">
+                <div class="progress-fill" style="--percent:12">
+                </div>
+              </div>
+            </div>
+            <div class="skill" data-skill="CSS">
+              <div class="skill-header">
+                <span class="skill-name">CSS</span> <span class=
+                "skill-percent" data-target="65">0%</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" aria-label=
+              "CSS skill">
+                <div class="progress-fill" style="--percent:12">
+                </div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="section-title">
+              Software / Tools
+            </div>
+            <div class="software-grid">
+              <div class="sw-badge">
+                Theos
+              </div>
+              <div class="sw-badge">
+                FridaCodeManager
+              </div>
+              <div class="sw-badge">
+                Ghidra
+              </div>
+              <div class="sw-badge">
+                Frida
+              </div>
+              <div class="sw-badge">
+                VSCode
+              </div>
+              <div class="sw-badge">
+                Replit
+              </div>
+              <div class="sw-badge">
+                Bash
+              </div>
+              <div class="sw-badge">
+                Netlify
+              </div>
+              <div class="sw-badge">
+                Github
+              </div>
+              <div class="sw-badge">
+                Github Pages
+              </div>
+              <div class="sw-badge">
+                Frida
+              </div>
+            </div>
+          </div>
+          <div class="card animate-on-scroll" style=
+          "margin-top:18px">
+            <div class="section-title">
+              Hobbies & Focus
+            </div>
+            <div class="hobby-list">
+              <div class="hobby">
+                Web Development
+              </div>
+              <div class="hobby">
+                Network Research
+              </div>
+              <div class="hobby">
+                iOS Security Research
+              </div>
+              <div class="hobby">
+                Roblox Exploiting
+              </div>
+              <div class="hobby">
+                Vulnerability Research & Reverse Engineering
+              </div>
+              <div class="hobby">
+                Sideloading & Private API's
+              </div>
+            </div>
+          </div>
+          <div class="spacer" id="projects"></div>
+          <div class="section-title">
+            Direct Install
+          </div>
+          <div class="projects-grid">
+            <div class="project-card animate-on-scroll">
+              <div class="project-icon"><img src="IMG_9973.png"
+              alt="DNS Icon" style=
+              "width:28px; height:28px; border-radius:12px; object-fit:cover;"></div>
+              <h3 class="project-title">Khoindvn DNS Install</h3>
+              <p class="project-desc">Prevent blacklists and
+              revokes by blocking Apple's servers</p>
+              <p class="project-desc"><strong>⚠️ If using Direct
+              Install, it is recommended to use. We do not own or
+              manage this service. Use at your own
+              risk.</strong></p><a href=
+              "https://khoindvn.io.vn/document/DNS/signed_khoindvn.mobileconfig"
+              class="btn project-btn" style=
+              "text-decoration:none;">Install</a> <a href=
+              "https://khoindvn.io.vn" class="btn project-btn"
+              style="text-decoration:none;"><strong>View
+              Khoindvn</strong></a>
+            </div>
+            <div class="project-card animate-on-scroll">
+              <div class="project-icon"><img src="delta.jpeg" alt=
+              "Delta Icon" style=
+              "width:28px; height:28px; border-radius:12px; object-fit:cover;"></div>
+              <h3 class="project-title">Delta 2.690.721</h3>
+              <p class="project-desc">V3 China Telecommunications
+              Corporation</p>
+              <p class="project-desc"><strong>⚠️ Install DNS before
+              using to avoid revokes and
+              blacklists.</strong></p><a href=
+              "itms-services://?action=download-manifest&amp;url=https://zodacios.github.io/delta.plist"
+              class="btn project-btn" style=
+              "text-decoration:none;">Install</a>
+            </div>
+            <div class="card animate-on-scroll" style=
+            "margin-top:18px">
+              <div class="section-title">
+                Contacts
+              </div>
+              <div class="contacts" role="list">
+                <button class="contact-btn" aria-label=
+                "GitHub profile" role="listitem" onclick=
+                "window.open('#','_blank')"><span class="btn-inner"
+                aria-hidden="true"><svg width="20" height="20"
+                viewbox="0 0 24 24" fill="white" xmlns=
+                "http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d=
+                "M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-2.02c-3.2.7-3.88-1.38-3.88-1.38-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.75.4-1.25.72-1.54-2.56-.29-5.26-1.28-5.26-5.72 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18.92-.26 1.9-.39 2.88-.39s1.96.13 2.88.39c2.19-1.5 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.09 0 4.46-2.71 5.42-5.29 5.7.41.35.77 1.03.77 2.08v3.09c0 .3.21.66.79.55C20.71 21.38 24 17.08 24 12 24 5.73 18.27.5 12 .5z"></path>
+                </svg></span></button> <button class="contact-btn"
+                aria-label="Discord server" role="listitem"
+                onclick="window.open('#','_blank')"><span class=
+                "btn-inner" aria-hidden="true"><svg width="20"
+                height="20" viewbox="0 0 71 55" fill="white" xmlns=
+                "http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d=
+                "M60.104 4.5A58.9 58.9 0 0 0 46.8 0c0 0-1.4 2.6-3.2 4.8-9.2-1.3-18.8-1.3-27.8 0C12.7 2.6 11.3 0 11.3 0 6.1 0 1.6 2 0 4.5 0 16.3 3.6 27.6 9.8 36.4c7.2 10.4 16.2 15.2 16.2 15.2 1.1-.9 2-1.8 2.8-2.8 0 0 6.2 1 11.1 1 4.9 0 10.9-1 10.9-1 .8 1 1.7 1.9 2.8 2.8 0 0 8.9-4.9 16.2-15.3 6.1-8.8 9.8-20 9.8-31.8-.7-2.5-5.2-4.5-10.4-4.5 0 0-1.4 2.6-3.2 4.8-9.2-1.3-18.8-1.3-27.8 0C61.5 7.1 60.1 4.5 60.1 4.5z"></path>
+                </svg></span></button> <button class="contact-btn"
+                aria-label="Twitter" role="listitem" onclick=
+                "window.open('#','_blank')"><span class="btn-inner"
+                aria-hidden="true"><svg width="20" height="20"
+                viewbox="0 0 24 24" fill="white" xmlns=
+                "http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d=
+                "M23 4.56c-.8.36-1.6.6-2.5.71a4.25 4.25 0 0 0 1.87-2.35 8.46 8.46 0 0 1-2.7 1.04 4.22 4.22 0 0 0-7.19 3.85A12 12 0 0 1 3.1 3.3a4.22 4.22 0 0 0 1.31 5.63 4.17 4.17 0 0 1-1.91-.53v.05a4.22 4.22 0 0 0 3.39 4.13c-.4.1-.8.15-1.22.15-.3 0-.6-.03-.88-.08a4.24 4.24 0 0 0 3.95 2.93A8.48 8.48 0 0 1 1.5 19.54a12 12 0 0 0 6.5 1.9c7.8 0 12.07-6.46 12.07-12.07v-.55A8.6 8.6 0 0 0 23 4.56z"></path>
+                </svg></span></button> <button class="contact-btn"
+                aria-label="YouTube" role="listitem" onclick=
+                "window.open('#','_blank')"><span class="btn-inner"
+                aria-hidden="true"><svg width="20" height="20"
+                viewbox="0 0 24 24" fill="white" xmlns=
+                "http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d=
+                "M23.5 6.2s-.2-1.7-.8-2.4c-.7-.8-1.5-.8-1.9-.9C17.6 2.2 12 2.2 12 2.2h-.1s-5.6 0-8.8.7c-.4.1-1.2.1-1.9.9C.2 4.6 0 6.2 0 6.2S0 8 0 9.9v4.1c0 1.9.1 3.7.1 3.7s.2 1.7.8 2.4c.7.8 1.6.8 2 .9 1.5.2 6.6.7 9.1.7h.1s5.6 0 8.8-.7c.4-.1 1.2-.1 1.9-.9.6-.7.8-2.4.8-2.4s.1-1.8.1-3.7V9.9c0-1.9-.1-3.7-.1-3.7zM9.8 15.1V8.9l6 3.1-6 3.1z"></path>
+                </svg></span></button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <p>© 2025 ZodaciOS. All rights reserved.</p>
+          <p>Designed & Developed by ZodaciOS</p>
+        </div>
+        <div class="footer-right">
+          <a href="https://github.com/ZodaciOS" class=
+          "footer-link">View Github</a> <a href="#projects" class=
+          "footer-link">View Projects</a> <a href="#" class=
+          "footer-link">Secret..?</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+
+
+
+  function animateNumber(el, start, end, duration=900){
+  const startTime = performance.now();
+  function step(now){
+    const t = Math.min(1, (now - startTime) / duration);
+    const eased = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t; // smooth ease
+    const current = Math.round(start + (end - start) * eased);
+    el.textContent = current + '%';
+    if(t < 1) requestAnimationFrame(step);
+    else el.textContent = end + '%';
+  }
+  requestAnimationFrame(step);
+  }
+
+
+  const skillElems = document.querySelectorAll('.skill');
+  const io = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const skill = entry.target;
+      const percentEl = skill.querySelector('.skill-percent');
+      const target = parseInt(percentEl.getAttribute('data-target') || '0', 10);
+
+      animateNumber(percentEl, 0, target, 1100);
+
+      const fill = skill.querySelector('.progress-fill');
+      if(fill){
+
+        fill.style.width = target + '%';
+
+        const track = skill.querySelector('.progress-track');
+        if(track) track.setAttribute('aria-valuenow', String(target));
+      }
+      observer.unobserve(skill);
+    }
+  });
+  },{threshold:0.18});
+
+
+  skillElems.forEach(s => io.observe(s));
+
+
+  const fades = document.querySelectorAll('.animate-on-scroll');
+  const fadeObserver = new IntersectionObserver((entries, obs) => {
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      obs.unobserve(e.target);
+    }
+  });
+  },{threshold:0.12});
+  fades.forEach(f => fadeObserver.observe(f));
+
+
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.progress-fill').forEach(el=>{
+    el.style.transition = 'none';
+    el.style.animation = 'none';
+  });
+  }
+  </script>
+</body>
+</html>
